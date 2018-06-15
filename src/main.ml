@@ -27,11 +27,8 @@ let _ =
     String.sub filename 0 (String.length filename -4)
     ^ ".mld"
   in *)
-  print_endline filename;
   readall filename
   |> Omd.of_string
   |> mld_of_md
   |> print_endline
   (*|> writeall outname*)
-
-
