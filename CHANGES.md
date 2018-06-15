@@ -1,2 +1,2 @@
-0.0.1 (June 2018)
-* first release
+## 0.1.0 (2018-06-15)
+- first release
