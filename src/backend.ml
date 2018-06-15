@@ -7,7 +7,6 @@
 
 open Omd_representation
 open Omd_utils
-open Printf
 
 (* the follwing to functions come from 
  * https://github.com/ocaml/omd/blob/master/src/omd_backend.ml#L632 *)
@@ -160,7 +159,7 @@ let rec mld_of_md md =
           if Buffer.length b > 0 && Buffer.nth b (Buffer.length b - 1) <> '\n'
           then Buffer.add_char b '\n';
           add_spaces list_indent;
-          bprintf b "- ";
+          Printf.bprintf b "- ";
           loop ~is_in_list:true (list_indent+4) li;
         ) l;
       add_spaces list_indent;
@@ -313,7 +312,7 @@ let rec mld_of_md md =
       Buffer.add_char b '\n';
       List.iter
         (fun (name, (url, title)) ->
-           bprintf b "%s: {{: %s} %s}\n"
+           Printf.bprintf b "%s: {{: %s} %s}\n"
              name url (if title = "" then url else title)
         )
         r#get_all

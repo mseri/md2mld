@@ -5,7 +5,6 @@
 (* http://www.isc.org/downloads/software-support-policy/isc-license/   *)
 (***********************************************************************)
 
-open Backend
 
 let readall filename =
   let ic = open_in filename in
@@ -36,6 +35,6 @@ let _ =
   in *)
   readall filename
   |> Omd.of_string
-  |> mld_of_md
+  |> Backend.mld_of_md
   |> print_endline
   (*|> writeall outname*)
