@@ -6,6 +6,7 @@ license: "ISC"
 homepage: "https://github.com/mseri/md2mld"
 dev-repo: "https://github.com/mseri/md2mld.git"
 bug-reports: "https://github.com/mseri/md2mld/issues"
+doc: "https://mseri.github.io/md2mld/"
 tags: [  ]
 build: [["jbuilder" "build" "-p" name "-j" jobs]]
 depends: [
