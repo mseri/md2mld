@@ -1,3 +1,10 @@
+(***********************************************************************)
+(* ml2mld: convert Markdown files to mld for odoc                      *)
+(* (c) 2018 by Marcello Seri <marcello.seri@gmail.com>                 *)
+(* Licence : ISC                                                       *)
+(* http://www.isc.org/downloads/software-support-policy/isc-license/   *)
+(***********************************************************************)
+
 open Backend
 
 let readall filename =
