@@ -1,7 +1,5 @@
 (executable
   ((name main)
    (public_name md2mld)
-   (libraries (cmdliner
-                omd
-                ))
+   (libraries (omd))
    ))
