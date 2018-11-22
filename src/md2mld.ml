@@ -13,25 +13,37 @@ let readall filename =
     really_input ic b 0 n ; close_in ic ; Bytes.to_string b
   with exn -> close_in ic ; raise exn
 
+(*
 let writeall filename content =
   let oc = open_out filename in
   try
     Printf.fprintf oc "%s\n" content ;
     close_out oc
   with exn -> close_out oc ; raise exn
+*)
 
 let _ =
-  if Array.length Sys.argv < 2 then (
-    Printf.eprintf "usage: %s filename.md\n" Sys.executable_name ;
-    exit 1 ) ;
-  let filename = Sys.argv.(1) in
-  if not (Sys.file_exists filename) then (
-    Printf.eprintf "error: file %s not found\n" filename ;
-    exit 1 ) ;
-  (* let outname = 
-    String.sub filename 0 (String.length filename -4)
-    ^ ".mld"
-  in *)
-  readall filename |> Omd.of_string |> Backend.mld_of_md |> print_endline
+  let min_header = ref 0 in
+  let no_file_specified = ref true in
+  let speclist = [
+    ("-min-header", Arg.Set_int min_header,
+     "Sets the section level associated to <h1> in the generated odoc file \
+      (all the other values will be determined incrementally). Defaults to 0.")
+  ] in
+  let usage_msg = "md2mld converts a Markdown-format file into the mld format \
+                   used by odoc to render HTML documentation or OCaml \
+                   libraries. The following options are available:\n"
+  in
+  let runner filename =
+    no_file_specified := false;
+    if not (Sys.file_exists filename) then (
+      Printf.eprintf "error: file %s not found\n%!" filename ;
+      exit 2 ) ;
+    let min_header = !min_header in
+    readall filename |> Omd.of_string |> Backend.mld_of_md ~min_header |> print_endline
+  in
+  Arg.parse speclist runner usage_msg;
+  if !no_file_specified then (
+    Arg.usage speclist usage_msg;
+    exit 1 )
 
-(*|> writeall outname*)

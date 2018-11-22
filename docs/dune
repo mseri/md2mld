@@ -4,7 +4,7 @@
  (action
   (with-stdout-to
    %{targets}
-   (run %{exe:../src/md2mld.exe} %{deps})
+   (run %{exe:../src/md2mld.exe} -min-header 3 %{deps})
   )
  )
 )
