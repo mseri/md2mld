@@ -1,5 +1,5 @@
 (executable
- (name main)
+ (name md2mld)
  (public_name md2mld)
  (libraries omd)
 )

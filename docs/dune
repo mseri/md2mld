@@ -1,0 +1,14 @@
+(rule
+ (targets index.mld)
+ (deps ../README.md)
+ (action
+  (with-stdout-to
+   %{targets}
+   (run %{exe:../src/md2mld.exe} %{deps})
+  )
+ )
+)
+
+(documentation
+ (mld_files index)
+)
