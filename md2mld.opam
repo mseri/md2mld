@@ -11,7 +11,7 @@ tags: [  ]
 build: [["jbuilder" "build" "-p" name "-j" jobs]]
 synopsis: "Little cli tool to convert md files into mld files"
 depends: [
-  "jbuilder" {build}
+  "dune" {build & >= "1.4.0"}
   "base-bytes"
   "omd"
 ]
