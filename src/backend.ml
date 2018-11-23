@@ -129,15 +129,15 @@ let rec mld_of_md ~min_header md =
         List.iter
           (fun li ->
             add_spaces list_indent ;
-            Buffer.add_string b "+ " ;
+            Buffer.add_string b "{+ " ;
             loop ~is_in_list:true (list_indent + 4) li ;
-            Buffer.add_char b '\n' )
+            Buffer.add_string b "}\n" )
           l ;
         add_spaces list_indent ;
         Buffer.add_string b "}" ;
         if list_indent = 0 then Buffer.add_char b '\n' ;
         loop list_indent tl
-    | Ul l :: tl ->
+    | Ul l :: tl | Ulp l :: tl ->
         if Buffer.length b > 0 && Buffer.nth b (Buffer.length b - 1) <> '\n'
         then Buffer.add_char b '\n' ;
         add_spaces list_indent ;
@@ -152,27 +152,6 @@ let rec mld_of_md ~min_header md =
         add_spaces list_indent ;
         Buffer.add_string b "}" ;
         if list_indent = 0 then Buffer.add_char b '\n' ;
-        loop list_indent tl
-    | Ulp l :: tl ->
-        add_spaces list_indent ;
-        Buffer.add_string b "{ul \n" ;
-        List.iter
-          (fun li ->
-            if
-              Buffer.length b > 0 && Buffer.nth b (Buffer.length b - 1) <> '\n'
-            then Buffer.add_char b '\n' ;
-            add_spaces list_indent ;
-            Buffer.add_string b "{- " ;
-            loop ~is_in_list:true (list_indent + 4) li ;
-            Buffer.add_string b "}\n" )
-          l ;
-        add_spaces list_indent ;
-        Buffer.add_string b "}" ;
-        ( match tl with
-        | (H1 _ | H2 _ | H3 _ | H4 _ | H5 _ | H6 _) :: _
-         |NL :: (H1 _ | H2 _ | H3 _ | H4 _ | H5 _ | H6 _) :: _ ->
-            Buffer.add_char b '\n'
-        | _ -> () ) ;
         loop list_indent tl
     | Code (_lang, c) :: tl ->
         Buffer.add_char b '[' ;
