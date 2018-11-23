@@ -48,4 +48,5 @@ let _ =
       let min_header = !min_header in
       readall filename |> Omd.of_string
       |> Backend.mld_of_md ~min_header
+      |> String.trim
       |> print_endline
