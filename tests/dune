@@ -23,9 +23,13 @@
 (alias
  (name runtest)
  (action
-  (progn
-   (diff readme.expected readme.output)
-   (diff readme-min-header-3.expected readme-min-header-3.output)
-  )
+  (diff readme.expected readme.output)
+ )
+)
+
+(alias
+ (name runtest)
+ (action
+  (diff readme-min-header-3.expected readme-min-header-3.output)
  )
 )
