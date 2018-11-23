@@ -1,3 +1,6 @@
+- trim output
+- cleanup argument parsing
+
 ## 0.3.0 (2018-11-23)
 - test using dune promotion behaviour
 - re-format using ocamlformt
