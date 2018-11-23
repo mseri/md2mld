@@ -23,7 +23,7 @@ let writeall filename content =
 *)
 
 let _ =
-  let input_file = ref None in
+  let input_files = ref [] in
   let min_header = ref 0 in
   let speclist =
     [ ( "-min-header"
@@ -36,17 +36,18 @@ let _ =
      to render HTML documentation or OCaml libraries.\n\n\
      Options:"
   in
-  Arg.parse speclist (fun filename -> input_file := Some filename) usage_msg ;
-  match !input_file with
-  | None ->
+  Arg.parse speclist
+    (fun filename -> input_files := filename :: !input_files)
+    usage_msg ;
+  match !input_files with
+  | [] | _ :: _ :: _ ->
       Arg.usage speclist usage_msg ;
       exit 1
-  | Some filename when not (Sys.file_exists filename) ->
+  | [filename] when not (Sys.file_exists filename) ->
       Printf.eprintf "error: file %s not found\n%!" filename ;
       exit 2
-  | Some filename ->
+  | [filename] ->
       let min_header = !min_header in
       readall filename |> Omd.of_string
       |> Backend.mld_of_md ~min_header
-      |> String.trim
-      |> print_endline
+      |> String.trim |> print_endline
