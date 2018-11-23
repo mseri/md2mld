@@ -20,3 +20,5 @@ You can see the documentation generated from the latest tagged version of this R
 # Known issues
 
 Until the new odoc [fixing #141](https://github.com/ocaml/odoc/issues/141) is released, the minimal header allowed in the `md` file will be the level 3 one `###`.
+You can work around this by using the `-min-header 3` flag during the invocation of `md2mld`.
+
