@@ -23,31 +23,29 @@ let writeall filename content =
 *)
 
 let _ =
+  let input_file = ref None in
   let min_header = ref 0 in
-  let no_file_specified = ref true in
   let speclist =
     [ ( "-min-header"
       , Arg.Set_int min_header
-      , "Sets the section level associated to <h1> in the generated odoc file \
-         (all the other values will be determined incrementally). Defaults to \
-         0." ) ]
+      , "Minimal section header level. Defaults to 0." ) ]
   in
   let usage_msg =
-    "md2mld converts a Markdown-format file into the mld format used by odoc \
-     to render HTML documentation or OCaml libraries. The following options \
-     are available:\n"
+    "Usage: md2mld [OPTIONS] FILENAME\n\
+     md2mld converts a Markdown-format file into the mld format used by odoc \
+     to render HTML documentation or OCaml libraries.\n\n\
+     Options:"
   in
-  let runner filename =
-    no_file_specified := false ;
-    if not (Sys.file_exists filename) then (
+  Arg.parse speclist (fun filename -> input_file := Some filename) usage_msg ;
+  match !input_file with
+  | None ->
+      Arg.usage speclist usage_msg ;
+      exit 1
+  | Some filename when not (Sys.file_exists filename) ->
       Printf.eprintf "error: file %s not found\n%!" filename ;
-      exit 2 ) ;
-    let min_header = !min_header in
-    readall filename |> Omd.of_string
-    |> Backend.mld_of_md ~min_header
-    |> print_endline
-  in
-  Arg.parse speclist runner usage_msg ;
-  if !no_file_specified then (
-    Arg.usage speclist usage_msg ;
-    exit 1 )
+      exit 2
+  | Some filename ->
+      let min_header = !min_header in
+      readall filename |> Omd.of_string
+      |> Backend.mld_of_md ~min_header
+      |> print_endline
