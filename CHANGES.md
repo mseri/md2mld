@@ -1,3 +1,6 @@
+## 0.3.0 (2018-11-23)
+- test using dune promotion behaviour
+- re-format using ocamlformt
 - allow the minimal header section value to be specified on the CLI
 
 ## 0.2.0 (2018-11-22)
