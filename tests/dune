@@ -1,0 +1,31 @@
+(rule
+ (targets readme.output)
+ (deps ../README.md)
+ (action
+  (with-stdout-to
+   %{targets}
+   (run %{exe:../src/md2mld.exe} %{deps})
+  )
+ )
+)
+
+(rule
+ (targets readme-min-header-3.output)
+ (deps ../README.md)
+ (action
+  (with-stdout-to
+   %{targets}
+   (run %{exe:../src/md2mld.exe} -min-header 3 %{deps})
+  )
+ )
+)
+
+(alias
+ (name runtest)
+ (action
+  (progn
+   (diff readme.expected readme.output)
+   (diff readme-min-header-3.expected readme-min-header-3.output)
+  )
+ )
+)
