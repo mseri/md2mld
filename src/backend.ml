@@ -145,9 +145,9 @@ let rec mld_of_md ~min_header md =
         List.iter
           (fun li ->
             add_spaces list_indent ;
-            Printf.bprintf b "- " ;
+            Buffer.add_string b "{- " ;
             loop ~is_in_list:true (list_indent + 4) li ;
-            Buffer.add_char b '\n' )
+            Buffer.add_string b "}\n" )
           l ;
         add_spaces list_indent ;
         Buffer.add_string b "}" ;
@@ -162,8 +162,9 @@ let rec mld_of_md ~min_header md =
               Buffer.length b > 0 && Buffer.nth b (Buffer.length b - 1) <> '\n'
             then Buffer.add_char b '\n' ;
             add_spaces list_indent ;
-            Printf.bprintf b "- " ;
-            loop ~is_in_list:true (list_indent + 4) li )
+            Buffer.add_string b "{- " ;
+            loop ~is_in_list:true (list_indent + 4) li ;
+            Buffer.add_string b "}\n" )
           l ;
         add_spaces list_indent ;
         Buffer.add_string b "}" ;
