@@ -20,15 +20,15 @@
  )
 )
 
-(alias
- (name runtest)
+(rule
+ (alias runtest)
  (action
   (diff readme.expected readme.output)
  )
 )
 
-(alias
- (name runtest)
+(rule
+ (alias runtest)
  (action
   (diff readme-min-header-3.expected readme-min-header-3.output)
  )
