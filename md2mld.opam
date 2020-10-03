@@ -13,5 +13,5 @@ depends: [
   "base-bytes"
   "omd"
 ]
-build: ["dune" "build" "-p" name "-j" jobs]
+build: ["dune" "build" "-p" name "-j" jobs "@install" "@runtest" {with-test}]
 dev-repo: "git+https://github.com/mseri/md2mld.git"
