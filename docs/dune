@@ -4,11 +4,7 @@
  (action
   (with-stdout-to
    %{targets}
-   (run %{exe:../src/md2mld.exe} -min-header 3 %{deps})
-  )
- )
-)
+   (run %{exe:../src/md2mld.exe} -min-header 3 %{deps}))))
 
 (documentation
- (mld_files index)
-)
+ (mld_files index))
