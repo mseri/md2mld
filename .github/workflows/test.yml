@@ -1,0 +1,21 @@
+name: md2mld CI
+on:
+  - push
+  - pull_request
+jobs:
+  run:
+    name: Tests
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        # no special functionality to test in macos-latest or windows-latest
+        operating-system: [ubuntu-latest]
+        ocaml-version: [ '4.11.1', '4.10.1', '4.09.1', '4.08.1', '4.07.1', '4.06.1', '4.05.0', '4.04.2', '4.03.0', '4.02.3' ]
+    steps:
+    - uses: actions/checkout@master
+    - uses: avsm/setup-ocaml@v1.0
+      with:
+        ocaml-version: ${{ matrix.ocaml-version }}
+    - run: opam pin add md2mld.dev . --no-action
+    - run: opam install md2mld --yes --deps-only
+    - run: opam install -t md2mld

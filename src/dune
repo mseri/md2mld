@@ -1,5 +1,4 @@
 (executable
  (name md2mld)
  (public_name md2mld)
- (libraries omd)
-)
+ (libraries omd))

@@ -1,1 +1,2 @@
-(lang dune 1.4)
+(lang dune 2.0)
+(name md2mld)

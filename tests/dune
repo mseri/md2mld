@@ -4,10 +4,7 @@
  (action
   (with-stdout-to
    %{targets}
-   (run %{exe:../src/md2mld.exe} %{deps})
-  )
- )
-)
+   (run %{exe:../src/md2mld.exe} %{deps}))))
 
 (rule
  (targets readme-min-header-3.output)
@@ -15,21 +12,14 @@
  (action
   (with-stdout-to
    %{targets}
-   (run %{exe:../src/md2mld.exe} -min-header 3 %{deps})
-  )
- )
-)
+   (run %{exe:../src/md2mld.exe} -min-header 3 %{deps}))))
 
-(alias
- (name runtest)
+(rule
+ (alias runtest)
  (action
-  (diff readme.expected readme.output)
- )
-)
+  (diff readme.expected readme.output)))
 
-(alias
- (name runtest)
+(rule
+ (alias runtest)
  (action
-  (diff readme-min-header-3.expected readme-min-header-3.output)
- )
-)
+  (diff readme-min-header-3.expected readme-min-header-3.output)))
