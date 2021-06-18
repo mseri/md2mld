@@ -1,0 +1,43 @@
+{0 this is a markdown test document}
+
+This is {e important} or {b very important}, let's try the [code] fences.
+
+{[
+let x = "bla"
+]}
+
+Hello this is a ordered list
+
++ One
++ Two
++ Three
+
+And this is a unordered list
+
+- One
+- Two
+- Three
+
+{1 Another header}
+
+Blah blah blah
+
+{v 
+This is some quote
+
+{v 
+This is a nested quote
+v}
+v}
+
+And this is a link {{: https://ocaml.org} Hello}.
+
+{[
+another code block?
+]}
+
+{{: https://ocaml.org} https://ocaml.org} <-- A link
+
+{!module:Module} <-- An explicit cross reference
+
+{!Module} <-- An inferred cross reference

@@ -15,6 +15,14 @@
    (run %{exe:../src/md2mld.exe} -min-header 3 %{deps}))))
 
 (rule
+ (targets test.output)
+ (deps test.md)
+ (action
+  (with-stdout-to
+   %{targets}
+   (run %{exe:../src/md2mld.exe} %{deps}))))
+
+(rule
  (alias runtest)
  (action
   (diff readme.expected readme.output)))
@@ -23,3 +31,8 @@
  (alias runtest)
  (action
   (diff readme-min-header-3.expected readme-min-header-3.output)))
+
+(rule
+ (alias runtest)
+ (action
+  (diff test.expected test.output)))
