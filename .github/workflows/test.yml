@@ -10,12 +10,24 @@ jobs:
       matrix:
         # no special functionality to test in macos-latest or windows-latest
         operating-system: [ubuntu-latest]
-        ocaml-version: [ '4.11.1', '4.10.1', '4.09.1', '4.08.1', '4.07.1', '4.06.1', '4.05.0', '4.04.2', '4.03.0', '4.02.3' ]
+        ocaml-compiler:
+          - 4.12.x
+          - 4.11.x
+          - 4.10.x
+          - 4.09.x
+          - 4.08.x
+          - 4.07.x
+          - 4.06.x
+          - 4.05.x
+          - 4.04.x
     steps:
     - uses: actions/checkout@master
-    - uses: avsm/setup-ocaml@v1.0
+    - uses: ocaml/setup-ocaml@v2
       with:
-        ocaml-version: ${{ matrix.ocaml-version }}
+        ocaml-compiler: ${{ matrix.ocaml-compiler }}
+        dune-cache: true
+    - run: opam install ocamlformat
+    - run: opam exec -- dune build @fmt
     - run: opam pin add md2mld.dev . --no-action
     - run: opam install md2mld --yes --deps-only
     - run: opam install -t md2mld
