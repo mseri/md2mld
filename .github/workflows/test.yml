@@ -26,8 +26,10 @@ jobs:
       with:
         ocaml-compiler: ${{ matrix.ocaml-compiler }}
         dune-cache: true
-    - run: opam install ocamlformat
-    - run: opam exec -- dune build @fmt
+    - if: ${{ matrix.ocaml-compiler == '4.12.x' }}
+      run: |
+        opam install ocamlformat
+        opam exec -- dune build @fmt
     - run: opam pin add md2mld.dev . --no-action
     - run: opam install md2mld --yes --deps-only
     - run: opam install -t md2mld
