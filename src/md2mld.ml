@@ -52,9 +52,9 @@ let _ =
     Printf.eprintf "error: file %s not found\n%!" filename;
     exit 2
   | [ filename ] ->
-    let min_header = !min_header in
+    let min_head_lvl = !min_header in
     readall filename
     |> Omd.of_string
-    |> Backend.mld_of_md ~min_header
+    |> Backend.mld_of_md ~min_head_lvl
     |> String.trim
     |> print_endline
