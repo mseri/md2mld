@@ -1,5 +1,8 @@
+## 0.4.0 (2021-06-25)
+- use html blockquotes
+- port to omd 2.0.0~alpha1 -- including cross-linking features (from https://github.com/ocaml/omd/pull/215)
 - trim output
-- cleanup argument parsing
+- modified argument parsing
 
 ## 0.3.0 (2018-11-23)
 - test using dune promotion behaviour
