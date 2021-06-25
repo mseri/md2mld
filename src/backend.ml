@@ -66,7 +66,7 @@ let rec add_to_buffer buf = function
   | TripleSurround (s1, t1, s2, t2, s3) ->
     Printf.bprintf buf "%s%a%s%a%s" s1 add_to_buffer t1 s2 add_to_buffer t2 s3
   | Surround (s1, t1, s2) -> Printf.bprintf buf "%s%a%s" s1 add_to_buffer t1 s2
-  | BlockSurround (s1, t1, s2) -> Printf.bprintf buf "\n\b%s%a%s\n" s1 add_to_buffer t1 s2
+  | BlockSurround (s1, t1, s2) -> Printf.bprintf buf "\n%s%a%s\n" s1 add_to_buffer t1 s2
   | GeneralBlock t -> Printf.bprintf buf "\n%a\n" add_to_buffer t
   | Text s -> Buffer.add_string buf s
   | Raw s -> Buffer.add_string buf s
@@ -150,9 +150,19 @@ let rec inline ({ il_desc; il_attributes = _ } : Omd.inline) =
     Surround ("{%html: ", text img, "%}")
 
 
-let rec block min_head_lvl ({ bl_desc; bl_attributes = _attr } : Omd.block) =
+type ctx =
+  { min_head_lvl : int
+  ; in_html : bool
+  }
+
+let rec block ctx ({ bl_desc; bl_attributes = _attr } : Omd.block) =
   match bl_desc with
-  | Blockquote q -> BlockSurround ("{v ", concat_map (block min_head_lvl) q, "v}")
+  | Blockquote q ->
+    let html =
+      BlockSurround
+        ("<blockquote>", concat_map (block { ctx with in_html = true }) q, "</blockquote>")
+    in
+    if ctx.in_html then html else Surround ("{%html: ", html, "%}")
   | Paragraph md -> GeneralBlock (inline md)
   | List (ty, sp, bl) ->
     let sign =
@@ -164,7 +174,7 @@ let rec block min_head_lvl ({ bl_desc; bl_attributes = _attr } : Omd.block) =
       let block' (t : Omd.block) =
         match t.bl_desc, sp with
         | Paragraph t, Tight -> concat (inline t) nl
-        | _ -> block min_head_lvl t
+        | _ -> block ctx t
       in
       let nl = if sp = Tight then Null else nl in
       Surround (sign, concat nl (concat_map block' t), "")
@@ -176,7 +186,7 @@ let rec block min_head_lvl ({ bl_desc; bl_attributes = _attr } : Omd.block) =
   | Heading (level, text) ->
     BlockSurround
       ( "{"
-        ^ (match level + min_head_lvl with
+        ^ (match level + ctx.min_head_lvl with
           | 1 -> "0"
           | 2 -> "1"
           | 3 -> "2"
@@ -189,7 +199,9 @@ let rec block min_head_lvl ({ bl_desc; bl_attributes = _attr } : Omd.block) =
   | Definition_list _ -> Null
 
 
-let of_doc ?(min_head_lvl = 0) doc = concat_map (block min_head_lvl) doc
+let of_doc ?(min_head_lvl = 0) doc =
+  concat_map (block { min_head_lvl; in_html = false }) doc
+
 
 let to_string t =
   let buf = Buffer.create 1024 in

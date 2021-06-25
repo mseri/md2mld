@@ -1,8 +1,8 @@
-{0 this is a markdown test document}
+{0 this is a markdown test document}
 
 This is {e important} or {b very important}, let's try the [code] fences.
 
-{[
+{[
 let x = "bla"
 ]}
 
@@ -18,21 +18,21 @@ And this is a unordered list
 - Two
 - Three
 
-{1 Another header}
+{1 Another header}
 
 Blah blah blah
-
-{v 
+{%html: 
+<blockquote>
 This is some quote
 
-{v 
+<blockquote>
 This is a nested quote
-v}
-v}
-
+</blockquote>
+</blockquote>
+%}
 And this is a link {{: https://ocaml.org} Hello}.
 
-{[
+{[
 another code block?
 ]}
 
