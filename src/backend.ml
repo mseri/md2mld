@@ -167,8 +167,8 @@ let rec block ctx (bl : 'attr Omd.block) =
   | List (_attr, ty, sp, bl) ->
     let sign =
       match ty with
-      | Ordered _ -> "+ "
-      | Bullet _ -> "- "
+      | Ordered _ -> "{+ "
+      | Bullet _ -> "{- "
     in
     let li t =
       let block' (t : 'attr Omd.block) =
@@ -177,9 +177,14 @@ let rec block ctx (bl : 'attr Omd.block) =
         | _ -> block ctx t
       in
       let nl = if sp = Tight then Null else nl in
-      Surround (sign, concat nl (concat_map block' t), "")
+      Surround (sign, concat nl (concat_map block' t), "}")
     in
-    concat nl (concat_map li bl)
+    let list_type =
+      match ty with
+      | Ordered _ -> "{ol "
+      | Bullet _ -> "{ul "
+    in
+    concat (Surround (list_type, concat_map li bl, "}")) nl
   | Code_block (_attr, _label, code) -> BlockSurround ("{[\n", text code, "]}")
   | Thematic_break _attr -> GeneralBlock (text "***")
   | Html_block (_attr, body) -> raw body

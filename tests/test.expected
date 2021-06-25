@@ -7,16 +7,16 @@ let x = "bla"
 ]}
 
 Hello this is a ordered list
-
-+ One
-+ Two
-+ Three
+{ol {+ One
+}{+ Two
+}{+ Three
+}}
 
 And this is a unordered list
-
-- One
-- Two
-- Three
+{ul {- One
+}{- Two
+}{- Three
+}}
 
 {1 Another header}
 
