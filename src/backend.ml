@@ -109,20 +109,20 @@ let is_cross_reference_regexps =
 
 let inferred_cross_reference = Str.regexp_string "ref:"
 
-let rec inline ({ il_desc; il_attributes = _ } : Omd.inline) =
-  match il_desc with
-  | Concat l -> concat_map inline l
-  | Text s -> text s
-  | Emph il -> Surround ("{e ", inline il, "}")
-  | Strong il -> Surround ("{b ", inline il, "}")
-  | Code s -> Surround ("[", text s, "]")
-  | Hard_break -> text "\n\n"
-  | Soft_break -> text "\n"
-  | Html body -> Surround ("{%html: ", text body, "%}")
-  | Link { label; destination; title = _ } ->
+let rec inline (inl : 'attr Omd.inline) =
+  match inl with
+  | Concat (_attr, l) -> concat_map inline l
+  | Text (_attr, s) -> text s
+  | Emph (_attr, il) -> Surround ("{e ", inline il, "}")
+  | Strong (_attr, il) -> Surround ("{b ", inline il, "}")
+  | Code (_attr, s) -> Surround ("[", text s, "]")
+  | Hard_break _attr -> text "\n\n"
+  | Soft_break _attr -> text "\n"
+  | Html (_attr, body) -> Surround ("{%html: ", text body, "%}")
+  | Link (_attr, { label; destination; title = _ }) ->
     let cross_reference =
       match label with
-      | { il_desc = Text s; _ } when s == destination ->
+      | Text (_attr, s) when s == destination ->
         if Str.string_match inferred_cross_reference destination 0
         then Some (Str.string_after destination 4)
         else if List.exists
@@ -135,7 +135,7 @@ let rec inline ({ il_desc; il_attributes = _ } : Omd.inline) =
     (match cross_reference with
     | Some cross_reference -> Surround ("{!", text cross_reference, "}")
     | None -> TripleSurround ("{{: ", text destination, "} ", inline label, "}"))
-  | Image { label; destination; title } ->
+  | Image (_attr, { label; destination; title }) ->
     let img =
       "<img src=\""
       ^ escape_uri destination
@@ -155,35 +155,35 @@ type ctx =
   ; in_html : bool
   }
 
-let rec block ctx ({ bl_desc; bl_attributes = _attr } : Omd.block) =
-  match bl_desc with
-  | Blockquote q ->
+let rec block ctx (bl : 'attr Omd.block) =
+  match bl with
+  | Blockquote (_attr, q) ->
     let html =
       BlockSurround
         ("<blockquote>", concat_map (block { ctx with in_html = true }) q, "</blockquote>")
     in
     if ctx.in_html then html else Surround ("{%html: ", html, "%}")
-  | Paragraph md -> GeneralBlock (inline md)
-  | List (ty, sp, bl) ->
+  | Paragraph (_attr, md) -> GeneralBlock (inline md)
+  | List (_attr, ty, sp, bl) ->
     let sign =
       match ty with
       | Ordered _ -> "+ "
       | Bullet _ -> "- "
     in
     let li t =
-      let block' (t : Omd.block) =
-        match t.bl_desc, sp with
-        | Paragraph t, Tight -> concat (inline t) nl
+      let block' (t : 'attr Omd.block) =
+        match t, sp with
+        | Paragraph (_a, t), Tight -> concat (inline t) nl
         | _ -> block ctx t
       in
       let nl = if sp = Tight then Null else nl in
       Surround (sign, concat nl (concat_map block' t), "")
     in
     concat nl (concat_map li bl)
-  | Code_block (_label, code) -> BlockSurround ("{[\n", text code, "]}")
-  | Thematic_break -> GeneralBlock (text "***")
-  | Html_block body -> raw body
-  | Heading (level, text) ->
+  | Code_block (_attr, _label, code) -> BlockSurround ("{[\n", text code, "]}")
+  | Thematic_break _attr -> GeneralBlock (text "***")
+  | Html_block (_attr, body) -> raw body
+  | Heading (_attr, level, text) ->
     BlockSurround
       ( "{"
         ^ (match level + ctx.min_head_lvl with

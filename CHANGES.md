@@ -1,3 +1,6 @@
+## 0.5.0 (2021-06-25)
+- port to omd 2.0.0~alpha2
+
 ## 0.4.0 (2021-06-25)
 - use html blockquotes
 - port to omd 2.0.0~alpha1 -- including cross-linking features (from https://github.com/ocaml/omd/pull/215)
