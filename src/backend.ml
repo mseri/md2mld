@@ -49,6 +49,23 @@ let escape_uri s =
   Buffer.contents b
 
 
+let escape_mld_special_characters s =
+  let add_char buf c =
+    match c with
+    | '{' | '}' | '[' | ']' | '@' ->
+      Buffer.add_char buf '\\';
+      Buffer.add_char buf c
+    | _ -> Buffer.add_char buf c
+  in
+  (* Allocate a buffer for the worst possible case when every character needs to be escaped.
+     Since Markdown paragraphs are rarely longer than a few kilobytes,
+     that's arguably better than reallocations.
+   *)
+  let buf = Buffer.create @@ (String.length s * 2) in
+  let () = String.iter (fun c -> add_char buf c) s in
+  buf |> Buffer.to_bytes |> Bytes.to_string
+
+
 let to_plain_text t =
   let buf = Buffer.create 1024 in
   let rec go = function
@@ -112,7 +129,7 @@ let inferred_cross_reference = Str.regexp_string "ref:"
 let rec inline (inl : 'attr Omd.inline) =
   match inl with
   | Concat (_attr, l) -> concat_map inline l
-  | Text (_attr, s) -> text s
+  | Text (_attr, s) -> s |> escape_mld_special_characters |> text
   | Emph (_attr, il) -> Surround ("{e ", inline il, "}")
   | Strong (_attr, il) -> Surround ("{b ", inline il, "}")
   | Code (_attr, s) -> Surround ("[", text s, "]")
