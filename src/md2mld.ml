@@ -49,7 +49,10 @@ let _ =
   let speclist =
     [ ( "-min-header"
       , Arg.Set_int min_header
-      , "Minimal section header level. Defaults to 0." )
+      , "Minimal section header level. Defaults to 0." );
+      ( "-version"
+      , Arg.Unit (fun () -> print_endline "%%NAME%% %%VERSION%%"; exit 0)
+      , "Print version and exit." )
     ]
   in
   let usage_msg =

@@ -8,10 +8,13 @@ homepage: "https://github.com/mseri/md2mld"
 doc: "https://mseri.github.io/md2mld/"
 bug-reports: "https://github.com/mseri/md2mld/issues"
 depends: [
-  "ocaml"
+  "ocaml" {>= "4.08"}
   "dune" {>= "2.0"}
   "base-bytes"
   "omd" {>= "2.0.0~alpha2"}
 ]
-build: ["dune" "build" "-p" name "-j" jobs "@install" "@runtest" {with-test}]
+build: [
+  ["dune" "subst"] {dev}
+  ["dune" "build" "-p" name "-j" jobs "@install" "@runtest" {with-test}]
+]
 dev-repo: "git+https://github.com/mseri/md2mld.git"
