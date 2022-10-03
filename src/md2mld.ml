@@ -11,8 +11,8 @@ let readall ic =
     buf |> Buffer.to_bytes |> Bytes.to_string
   in
   let channel_size =
-    try Some (in_channel_length ic)
-    with Sys_error _ -> None
+    try Some (in_channel_length ic) with
+    | Sys_error _ -> None
   in
   let buf = Buffer.create @@ Option.value ~default:4096 channel_size in
   try
@@ -20,13 +20,14 @@ let readall ic =
       while true do
         Buffer.add_channel buf ic 4096
       done
-    in return_input ic buf
-  with
-  | End_of_file ->
+    in
     return_input ic buf
+  with
+  | End_of_file -> return_input ic buf
   | _ as exn ->
     let () = close_in ic in
     raise exn
+
 
 (*
 let writeall filename content =
@@ -43,15 +44,19 @@ let get_input_channel file_arg =
   | [ filename ] -> open_in filename
   | _ -> raise (Invalid_argument "Cannot handle multiple input files")
 
+
 let _ =
   let input_files = ref [] in
   let min_header = ref 0 in
   let speclist =
     [ ( "-min-header"
       , Arg.Set_int min_header
-      , "Minimal section header level. Defaults to 0." );
-      ( "-version"
-      , Arg.Unit (fun () -> print_endline "%%NAME%% %%VERSION%%"; exit 0)
+      , "Minimal section header level. Defaults to 0." )
+    ; ( "-version"
+      , Arg.Unit
+          (fun () ->
+            print_endline "%%NAME%% %%VERSION%%";
+            exit 0)
       , "Print version and exit." )
     ]
   in
@@ -77,4 +82,3 @@ let _ =
   | _ ->
     Arg.usage speclist usage_msg;
     exit 1
-
