@@ -16,4 +16,4 @@
  (depends
   (ocaml (>= "4.08"))
   base-bytes
-  (omd (>= "2.0.0~alpha2"))))
+  (omd (>= "2.0.0~alpha3"))))

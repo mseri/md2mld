@@ -41,3 +41,4 @@ another code block?
 {!module:Module} <-- An explicit cross reference
 
 {!Module} <-- An inferred cross reference
+{table {tr {th foo}{th bar}{th tut}}{tr {td {e baz}}{td bim}{td [who]}}{tr {td per}{td {b lol}}{td dit}}}
