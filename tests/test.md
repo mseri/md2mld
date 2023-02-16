@@ -34,3 +34,9 @@ And this is a link [Hello](https://ocaml.org).
 <module:Module> <-- An explicit cross reference
 
 <ref:Module> <-- An inferred cross reference
+
+
+| foo   | bar     | tut   |
+|:----- | ------- | -----:|
+| _baz_ | bim     | `who` |
+| per   | **lol** | dit   |
