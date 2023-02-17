@@ -230,7 +230,7 @@ let rec block ctx (bl : 'attr Omd.block) =
            Surround ("{tr ", row, "}"))
          rows
      in
-     Surround ("{table ", concat header rows, "}")
+     concat_map (fun x -> x) [nl; Surround ("{table ", concat header rows, "}"); nl]
 
 
 let of_doc ?(min_head_lvl = 0) doc =
