@@ -222,15 +222,15 @@ let rec block ctx (bl : 'attr Omd.block) =
   | Table (_attr, header, rows) ->
      (* Heavy syntax, no alignment defined yet *)
      let header =
-       let rows = concat_map (fun (cell, _align) -> Surround ("{th ", inline cell, "}")) header in
-       Surround ("{tr ", rows, "}") in
+       let row = concat_map (fun (cell, _align) -> Surround ("{th ", inline cell, "}")) header in
+       concat (Surround ("{tr ", row, "}")) nl in
      let rows =
        concat_map (fun row ->
            let row = concat_map (fun cell -> Surround ("{td ", inline cell, "}")) row in
-           Surround ("{tr ", row, "}"))
+           concat (Surround ("{tr ", row, "}")) nl)
          rows
      in
-     concat_map (fun x -> x) [nl; Surround ("{table ", concat header rows, "}"); nl]
+     BlockSurround ("{table\n", concat header rows, "}")
 
 
 let of_doc ?(min_head_lvl = 0) doc =
