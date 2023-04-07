@@ -13,10 +13,15 @@ $ md2mld filename.md > outfile.mld
 In [dune] you can use it to generate an mld file with
 
 {[
-(rule (with-stdout-to outfile.mld (run md2mld filename.md)))
+(rule
+ (target outfile.mld)
+ (deps filename.md)
+ (action
+  (with-stdout-to outfile.mld (run md2mld filename.md))))
 ]}
 
-You can see the documentation generated from the latest tagged version of this README at {{: http://mseri.github.io/md2mld/md2mld/index.html} mseri.github.io/md2mld/md2mld/index.html}.
+Attach the mld file using the {{: https://dune.readthedocs.io/en/stable/documentation.html#documentation-stanza-examples} [(documentation …)] stanza}.
+You can see the documentation generated from the latest tagged version of this README at {{: https://mseri.github.io/md2mld/md2mld} mseri.github.io/md2mld/md2mld}.
 
 {4 Known issues}
 {ul {- 

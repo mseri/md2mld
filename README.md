@@ -6,17 +6,22 @@
 
 You can use it manually as follows
 
-```
+```console
 $ md2mld filename.md > outfile.mld
 ```
 
 In `dune` you can use it to generate an mld file with
 
-```
-(rule (with-stdout-to outfile.mld (run md2mld filename.md)))
+```text
+(rule
+ (target outfile.mld)
+ (deps filename.md)
+ (action
+  (with-stdout-to outfile.mld (run md2mld filename.md))))
 ```
 
-You can see the documentation generated from the latest tagged version of this README at [mseri.github.io/md2mld/md2mld/index.html](http://mseri.github.io/md2mld/md2mld/index.html).
+Attach the mld file using the [`(documentation …)` stanza](https://dune.readthedocs.io/en/stable/documentation.html#documentation-stanza-examples).
+You can see the documentation generated from the latest tagged version of this README at [mseri.github.io/md2mld/md2mld](https://mseri.github.io/md2mld/md2mld).
 
 
 ## Known issues
