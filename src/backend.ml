@@ -23,28 +23,28 @@ let escape_uri s =
   let b = Buffer.create (String.length s) in
   String.iter
     (function
-      | ( '!'
-        | '*'
-        | '\''
-        | '('
-        | ')'
-        | ';'
-        | ':'
-        | '@'
-        | '='
-        | '+'
-        | '$'
-        | ','
-        | '/'
-        | '?'
-        | '%'
-        | '#'
-        | 'A' .. 'Z'
-        | 'a' .. 'z'
-        | '0' .. '9'
-        | '-' | '_' | '.' | '~' ) as c -> Buffer.add_char b c
-      | '&' -> Buffer.add_string b "&amp;"
-      | _ as c -> Printf.bprintf b "%%%2X" (Char.code c))
+     | ( '!'
+       | '*'
+       | '\''
+       | '('
+       | ')'
+       | ';'
+       | ':'
+       | '@'
+       | '='
+       | '+'
+       | '$'
+       | ','
+       | '/'
+       | '?'
+       | '%'
+       | '#'
+       | 'A' .. 'Z'
+       | 'a' .. 'z'
+       | '0' .. '9'
+       | '-' | '_' | '.' | '~' ) as c -> Buffer.add_char b c
+     | '&' -> Buffer.add_string b "&amp;"
+     | _ as c -> Printf.bprintf b "%%%2X" (Char.code c))
     s;
   Buffer.contents b
 
@@ -150,8 +150,8 @@ let rec inline (inl : 'attr Omd.inline) =
       | _ -> None
     in
     (match cross_reference with
-    | Some cross_reference -> Surround ("{!", text cross_reference, "}")
-    | None -> TripleSurround ("{{: ", text destination, "} ", inline label, "}"))
+     | Some cross_reference -> Surround ("{!", text cross_reference, "}")
+     | None -> TripleSurround ("{{: ", text destination, "} ", inline label, "}"))
   | Image (_attr, { label; destination; title }) ->
     let img =
       "<img src=\""
@@ -160,8 +160,8 @@ let rec inline (inl : 'attr Omd.inline) =
       ^ to_plain_text (inline label)
       ^ "\""
       ^ (match title with
-        | None -> ""
-        | Some title -> " title=\"" ^ title ^ "\"")
+         | None -> ""
+         | Some title -> " title=\"" ^ title ^ "\"")
       ^ "/>"
     in
     Surround ("{%html: ", text img, "%}")
@@ -209,12 +209,12 @@ let rec block ctx (bl : 'attr Omd.block) =
     BlockSurround
       ( "{"
         ^ (match level + ctx.min_head_lvl with
-          | 1 -> "0"
-          | 2 -> "1"
-          | 3 -> "2"
-          | 4 -> "3"
-          | 5 -> "4"
-          | _ -> "5")
+           | 1 -> "0"
+           | 2 -> "1"
+           | 3 -> "2"
+           | 4 -> "3"
+           | 5 -> "4"
+           | _ -> "5")
         ^ " "
       , inline text
       , "}" )
