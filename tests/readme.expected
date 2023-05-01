@@ -6,13 +6,13 @@
 
 You can use it manually as follows
 
-{[
+{@console[
 $ md2mld filename.md > outfile.mld
 ]}
 
 In [dune] you can use it to generate an mld file with
 
-{[
+{@text[
 (rule
  (target outfile.mld)
  (deps filename.md)

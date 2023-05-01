@@ -40,3 +40,10 @@ And this is a link [Hello](https://ocaml.org).
 |:----- | ------- | -----:|
 | _baz_ | bim     | `who` |
 | per   | **lol** | dit   |
+
+## Code
+
+``` python
+def f():
+    return 0
+```
