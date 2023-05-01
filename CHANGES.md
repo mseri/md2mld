@@ -1,3 +1,10 @@
+
+## 0.7 (2023-05-01)
+- Add option to dump OMD ast as sexp for debugging ([#20](https://github.com/mseri/md2mld/pull/20) MisterDA)
+- Support code block language tags ([#19](https://github.com/mseri/md2mld/pull/19) MisterDA)
+- Add support for odoc heavy table syntax ([#15](https://github.com/mseri/md2mld/pull/15) MisterDA)
+
+
 ## 0.6 (2022-10-03)
 - Add support for `-version` option ([#10](https://github.com/mseri/md2mld/pull/10) dmbaturin)
 - Escape square brackets, braces and `@` characters in text nodes, fixes [#4](https://github.com/mseri/md2mld/issues/4) ([#9](https://github.com/mseri/md2mld/pull/9) dmbaturin)
