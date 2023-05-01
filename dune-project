@@ -1,8 +1,7 @@
-(lang dune 3.6)
+(lang dune 3.7)
 (name md2mld)
 
 (generate_opam_files true)
-(formatting (enabled_for dune))
 
 (license "ISC")
 (source (github mseri/md2mld))
