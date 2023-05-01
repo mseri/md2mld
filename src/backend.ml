@@ -202,7 +202,9 @@ let rec block ctx (bl : 'attr Omd.block) =
       | Bullet _ -> "{ul "
     in
     concat (Surround (list_type, concat_map li bl, "}")) nl
-  | Code_block (_attr, _label, code) -> BlockSurround ("{[\n", text code, "]}")
+  | Code_block (_attr, label, code) ->
+    let opening = if label <> "" then "{@" ^ label ^ "[\n" else "{[\n" in
+    BlockSurround (opening, text code, "]}")
   | Thematic_break _attr -> GeneralBlock (text "***")
   | Html_block (_attr, body) -> raw body
   | Heading (_attr, level, text) ->

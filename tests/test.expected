@@ -47,3 +47,10 @@ another code block?
 {tr {td {e baz}}{td bim}{td [who]}}
 {tr {td per}{td {b lol}}{td dit}}
 }
+
+{1 Code}
+
+{@python[
+def f():
+    return 0
+]}
