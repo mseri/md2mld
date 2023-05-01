@@ -8,7 +8,7 @@ homepage: "https://github.com/mseri/md2mld"
 doc: "https://mseri.github.io/md2mld/"
 bug-reports: "https://github.com/mseri/md2mld/issues"
 depends: [
-  "dune" {>= "3.6"}
+  "dune" {>= "3.7"}
   "ocaml" {>= "4.08"}
   "base-bytes"
   "omd" {>= "2.0.0~alpha3"}
