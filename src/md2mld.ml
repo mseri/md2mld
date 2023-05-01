@@ -48,10 +48,14 @@ let get_input_channel file_arg =
 let _ =
   let input_files = ref [] in
   let min_header = ref 0 in
+  let dump_md_ast = ref false in
   let speclist =
     [ ( "-min-header"
       , Arg.Set_int min_header
       , "Minimal section header level. Defaults to 0." )
+    ; ( "-omd-ast"
+      , Arg.Set dump_md_ast
+      , "Dump the Markdown abstract syntax tree to stderr for debugging." )
     ; ( "-version"
       , Arg.Unit
           (fun () ->
@@ -76,9 +80,9 @@ let _ =
     let ic = get_input_channel !input_files in
     readall ic
     |> Omd.of_string
-    |> Backend.mld_of_md ~min_head_lvl
-    |> String.trim
-    |> print_endline
+    |> fun doc ->
+    if !dump_md_ast then prerr_string (Omd.to_sexp doc);
+    doc |> Backend.mld_of_md ~min_head_lvl |> String.trim |> print_endline
   | _ ->
     Arg.usage speclist usage_msg;
     exit 1
