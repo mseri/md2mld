@@ -12,10 +12,10 @@ jobs:
         operating-system: [ubuntu-latest]
         ocaml-compiler:
           - 4.14.x
-          - 4.08.x
+          - 5.x
     steps:
     - uses: actions/checkout@master
-    - uses: ocaml/setup-ocaml@v2
+    - uses: ocaml/setup-ocaml@v3
       with:
         ocaml-compiler: ${{ matrix.ocaml-compiler }}
         dune-cache: true
