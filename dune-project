@@ -14,5 +14,4 @@
  (synopsis "Little cli tool to convert md files into mld files")
  (depends
   (ocaml (>= "4.08"))
-  base-bytes
   (omd (>= "2.0.0~alpha3"))))

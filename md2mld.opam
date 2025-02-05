@@ -10,7 +10,6 @@ bug-reports: "https://github.com/mseri/md2mld/issues"
 depends: [
   "dune" {>= "3.7"}
   "ocaml" {>= "4.08"}
-  "base-bytes"
   "omd" {>= "2.0.0~alpha3"}
   "odoc" {with-doc}
 ]
