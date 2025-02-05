@@ -11,8 +11,7 @@ let readall ic =
     buf |> Buffer.to_bytes |> Bytes.to_string
   in
   let channel_size =
-    try Some (in_channel_length ic) with
-    | Sys_error _ -> None
+    try Some (in_channel_length ic) with Sys_error _ -> None
   in
   let buf = Buffer.create @@ Option.value ~default:4096 channel_size in
   try
@@ -25,8 +24,8 @@ let readall ic =
   with
   | End_of_file -> return_input ic buf
   | _ as exn ->
-    let () = close_in ic in
-    raise exn
+      let () = close_in ic in
+      raise exn
 
 
 (*
@@ -50,39 +49,40 @@ let _ =
   let min_header = ref 0 in
   let dump_md_ast = ref false in
   let speclist =
-    [ ( "-min-header"
-      , Arg.Set_int min_header
-      , "Minimal section header level. Defaults to 0." )
-    ; ( "-omd-ast"
-      , Arg.Set dump_md_ast
-      , "Dump the Markdown abstract syntax tree to stderr for debugging." )
-    ; ( "-version"
-      , Arg.Unit
+    [
+      ( "-min-header",
+        Arg.Set_int min_header,
+        "Minimal section header level. Defaults to 0." );
+      ( "-omd-ast",
+        Arg.Set dump_md_ast,
+        "Dump the Markdown abstract syntax tree to stderr for debugging." );
+      ( "-version",
+        Arg.Unit
           (fun () ->
             print_endline "%%NAME%% %%VERSION%%";
-            exit 0)
-      , "Print version and exit." )
+            exit 0),
+        "Print version and exit." );
     ]
   in
   let usage_msg =
     "Usage: md2mld [OPTIONS] FILENAME\n\
-     md2mld converts a Markdown-format file into the mld format used by odoc to render \
-     HTML documentation or OCaml libraries.\n\n\
+     md2mld converts a Markdown-format file into the mld format used by odoc \
+     to render HTML documentation or OCaml libraries.\n\n\
      Options:"
   in
-  Arg.parse speclist (fun filename -> input_files := filename :: !input_files) usage_msg;
+  Arg.parse speclist
+    (fun filename -> input_files := filename :: !input_files)
+    usage_msg;
   match !input_files with
   | [ filename ] when not (Sys.file_exists filename) ->
-    Printf.eprintf "error: file %s not found\n%!" filename;
-    exit 2
+      Printf.eprintf "error: file %s not found\n%!" filename;
+      exit 2
   | [] | [ _ ] ->
-    let min_head_lvl = !min_header in
-    let ic = get_input_channel !input_files in
-    readall ic
-    |> Omd.of_string
-    |> fun doc ->
-    if !dump_md_ast then prerr_string (Omd.to_sexp doc);
-    doc |> Backend.mld_of_md ~min_head_lvl |> String.trim |> print_endline
+      let min_head_lvl = !min_header in
+      let ic = get_input_channel !input_files in
+      readall ic |> Omd.of_string |> fun doc ->
+      if !dump_md_ast then prerr_string (Omd.to_sexp doc);
+      doc |> Backend.mld_of_md ~min_head_lvl |> String.trim |> print_endline
   | _ ->
-    Arg.usage speclist usage_msg;
-    exit 1
+      Arg.usage speclist usage_msg;
+      exit 1
